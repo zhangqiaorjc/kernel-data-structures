@@ -7,7 +7,7 @@
 int
 list_test()
 {
-    printf("large list test\n");
+    printf("Beginning list test...\n");
 
     struct list* newlist;
     newlist = list_create();
@@ -15,41 +15,49 @@ list_test()
     assert(list_getsize(newlist) == 0);
     assert(list_isempty(newlist));
 
-    /* push back TESTSIZE number of elements */
     int i;
+    int* elem;
+    /* push back TESTSIZE number of elements */
     for (i = 0; i < TESTSIZE; ++i) {
-        list_push_back(newlist, (void*) i);
+        elem = (int*)malloc(sizeof(int));
+        *elem = i;
+        list_push_back(newlist, (void*) elem);
     }
     assert(list_getsize(newlist) == TESTSIZE);
     assert(!list_isempty(newlist));
 
     /* pop front TESTSIZE number of elements */
-    int elem;
     for (i = 0; i < TESTSIZE; ++i) {
-        elem = (int)list_pop_front(newlist);
-        assert(elem == i);
+        elem = (int*)list_front(newlist);
+        assert(*elem == i);
+        list_pop_front(newlist);
+        free(elem);
     }
     assert(list_getsize(newlist) == 0);
     assert(list_isempty(newlist));
 
     /* push back TESTSIZE number of elements */
     for (i = 0; i < TESTSIZE; ++i) {
-        list_push_back(newlist, (void*) i);
+        elem = (int*)malloc(sizeof(int));
+        *elem = i;
+        list_push_back(newlist, (void*) elem);
     }
     assert(list_getsize(newlist) == TESTSIZE);
     assert(!list_isempty(newlist));
 
     /* pop front TESTSIZE number of elements */
     for (i = 0; i < TESTSIZE; ++i) {
-        elem = (int)list_pop_front(newlist);
-        assert(elem == i);
+        elem = (int*)list_front(newlist);
+        assert(*elem == i);
+        list_pop_front(newlist);
+        free(elem);
     }
     assert(list_getsize(newlist) == 0);
     assert(list_isempty(newlist));
 
     list_destroy(newlist);
 
-    printf("large list test complete\n");
+    printf("List test complete\n");
 
     return 0;
 }
@@ -60,7 +68,5 @@ main(int nargs, char** args)
     (void)nargs;
     (void)args;
 
-    printf("Beginning list test...\n");
     list_test();
-    printf("List test complete\n");
 }
